@@ -7,6 +7,4 @@ RUN apk add --update git openssh-client
 RUN echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN chmod +x /usr/bin/runner
 
-COPY key.priv /key.priv
-
 CMD ["/usr/bin/runner"]
