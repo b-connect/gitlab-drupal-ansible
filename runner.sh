@@ -8,13 +8,18 @@ if [ -z "$SSH_KEY" ]; then
     exit 1
 fi
 
+ssh-keyscan ${DEPLOY_HOST}
+
 echo "Starting ansible script";
 
 echo "-- ADD SSH KEY --";
 
-mkdir /root/.ssh
-echo "$SSH_KEY" > /root/.ssh/id_rsa
-chmod 700 /root/.ssh/id_rsa
+# mkdir /root/.ssh
+cat ${SSH_KEY} > /key.priv
+chmod 700 /key.priv
+chown root:root /key.priv
+
+cat /root/.ssh/id_rsa
 
 ansible --version
 
@@ -22,4 +27,4 @@ chmod root:root /root/.ssh -R
 
 echo ${DEPLOY_HOST} > /inventory
 
-ansible-playbook /playbook/bootstrap.yml -u dev --inventory /inventory
+ansible-playbook /playbook/bootstrap.yml -u dev --inventory /inventory --private-key /key.priv

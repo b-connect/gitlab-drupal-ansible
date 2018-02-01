@@ -1,2 +1,4 @@
 hosts
 test.env
+docker-compose.yml
+key.priv
