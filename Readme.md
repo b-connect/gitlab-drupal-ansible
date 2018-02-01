@@ -15,5 +15,5 @@ COMPOSER_INSTALL_FLAGS=<OPTIONAL-COMPOSER-FLAGS> | default "--quiet"
 # Path create
 
 ```
-/home/{ansible_user}/ansible/{{CI_ENVIRONMENT_SLUG}}/{{ CI_PROJECT_PATH_SLUG }}
+/home/{{ ansible_user }}/ansible/{{ CI_ENVIRONMENT_SLUG }}/{{ CI_PROJECT_NAMESPACE}}/{{ CI_PROJECT_NAME }}
 ```
