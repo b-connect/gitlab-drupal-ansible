@@ -19,6 +19,7 @@
         repo: git@vcs.b-connect.de:payu/website.git
         dest: "{{ BUILD_DIR }}"
         depth: 1
+        force: true
         version: "{{ CI_COMMIT_SHA }}"
 
     - name: Add docksal.env file
