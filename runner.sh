@@ -22,6 +22,8 @@ echo "$SSH_KEY" > /key.priv
 chmod 700 /key.priv
 chown root:root /key.priv
 
+echo "Checkout: ${CI_REPOSITORY_URL}"
+
 echo ${DEPLOY_HOST} > /inventory
 
 ansible-playbook /playbook/bootstrap.yml -u $DEPLOY_USER --inventory /inventory --private-key /key.priv
