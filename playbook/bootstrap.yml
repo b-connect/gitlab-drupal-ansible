@@ -17,7 +17,7 @@
   tasks:
     - name: Checkout project
       git:
-        repo: CI_REPOSITORY_URL
+        repo: "{{ CI_REPOSITORY_URL }}"
         dest: "{{ BUILD_DIR }}"
         force: true
         version: "{{ CI_COMMIT_SHA }}"
