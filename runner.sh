@@ -18,12 +18,10 @@ echo "Starting ansible script";
 
 echo "-- ADD SSH KEY --";
 
-# mkdir /root/.ssh
-echo "${SSH_KEY}" > /key.priv
+
+echo $SSH_KEY > /key.priv
 chmod 700 /key.priv
 chown root:root /key.priv
-
-cat /root/.ssh/id_rsa
 
 ansible --version
 
