@@ -19,7 +19,7 @@ echo "Starting ansible script";
 echo "-- ADD SSH KEY --";
 
 # mkdir /root/.ssh
-cat ${SSH_KEY} > /key.priv
+echo ${SSH_KEY} > /key.priv
 chmod 700 /key.priv
 chown root:root /key.priv
 
@@ -31,4 +31,4 @@ chmod root:root /root/.ssh -R
 
 echo ${DEPLOY_HOST} > /inventory
 
-ansible-playbook /playbook/bootstrap.yml -u ${DEPLOY_USER} --inventory /inventory --private-key /key.priv
+ansible-playbook /playbook/bootstrap.yml -u $DEPLOY_USER --inventory /inventory --private-key /key.priv
