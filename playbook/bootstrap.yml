@@ -2,9 +2,10 @@
 - hosts: all
   vars:
     - CI_ENVIRONMENT_URL: "{{ lookup('env','CI_ENVIRONMENT_URL') | default('test.dev.b-connect.eu', true) }}"
-    - CI_PROJECT_PATH_SLUG: "{{ lookup('env','CI_PROJECT_PATH_SLUG') | default('test-dev', true) }}"
+    - CI_PROJECT_NAMESPACE: "{{ lookup('env','CI_PROJECT_NAMESPACE') | default('test-dev', true) }}"
+    - CI_PROJECT_NAME: "{{ lookup('env','CI_PROJECT_NAME') | default('test-dev', true) }}"
     - CI_ENVIRONMENT_SLUG: "{{ lookup('env','CI_ENVIRONMENT_SLUG') | default('dev', true) }}"
-    - BUILD_DIR: "/home/{{ ansible_user }}/ansible/{{ CI_ENVIRONMENT_SLUG }}/{{ CI_PROJECT_PATH_SLUG}}"
+    - BUILD_DIR: "/home/{{ ansible_user }}/ansible/{{ CI_ENVIRONMENT_SLUG }}/{{ CI_PROJECT_NAMESPACE}}/{{ CI_PROJECT_NAME }}"
     - DOCKSAL_ENV_FILE: "{{ BUILD_DIR }}/.docksal/docksal-local.env"
     - COMPOSER_INSTALL_FLAGS: "{{ lookup('env','COMPOSER_INSTALL_FLAGS') | default('', true) }}"
     - DRUPAL_PROFILE: "{{ lookup('env','DRUPAL_PROFILE') | default('standard', true) }}"
