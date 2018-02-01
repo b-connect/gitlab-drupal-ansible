@@ -7,6 +7,10 @@ if [ -z "$SSH_KEY" ]; then
     echo "Need to set SSH_KEY"
     exit 1
 fi
+if [ -z "$DEPLOY_USER" ]; then
+    echo "Need to set DEPLOY_USER"
+    exit 1
+fi
 
 ssh-keyscan ${DEPLOY_HOST}
 
@@ -27,4 +31,4 @@ chmod root:root /root/.ssh -R
 
 echo ${DEPLOY_HOST} > /inventory
 
-ansible-playbook /playbook/bootstrap.yml -u dev --inventory /inventory --private-key /key.priv
+ansible-playbook /playbook/bootstrap.yml -u ${DEPLOY_USER} --inventory /inventory --private-key /key.priv
