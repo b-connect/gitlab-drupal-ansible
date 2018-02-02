@@ -1,7 +1,8 @@
 ---
 - name: Install local composer.
   local_action:
-    shell: "composer install {{ COMPOSER_INSTALL_FLAGS }}"
-    args:
-      chdir: "{{ CI_PROJECT_DIR }}/{{ DRUPAL_DOCROOT }}"
-      executable: /bin/zsh
+    composer:
+      command: "install"
+      optimize_autoloader: true
+      working_dir: "{{ CI_PROJECT_DIR }}"
+      ignore_platform_reqs: true
