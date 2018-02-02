@@ -5,7 +5,7 @@ if [ -z "$DEPLOY_HOST" ]; then
 fi
 if [ -z "$SSH_KEY" ]; then
     echo "Need to set SSH_KEY"
-    exit 1
+    # exit 1
 fi
 if [ -z "$DEPLOY_USER" ]; then
     echo "Need to set DEPLOY_USER"
@@ -18,7 +18,11 @@ echo "Starting ansible script";
 
 echo "-- ADD SSH KEY --";
 
-echo "$SSH_KEY" > /key.priv
+if ! [ -f "/key.priv" ]
+then
+  echo "$SSH_KEY" > /key.priv
+fi
+
 chmod 700 /key.priv
 chown root:root /key.priv
 

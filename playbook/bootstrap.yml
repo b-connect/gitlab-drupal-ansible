@@ -15,7 +15,10 @@
     - DRUPAL_ACCOUNT_PASS: "{{ lookup('env','DRUPAL_ACCOUNT_PASS') | default('admin', true) }}"
 
   tasks:
-    - name: Sync to dest host
+    - name: "Check if directory exists"
+      file: "path={{ BUILD_DIR }} state=directory"
+
+    - name: "Sync {{ CI_PROJECT_DIR }} to {{ inventory_hostname }}@{{ BUILD_DIR }} "
       synchronize:
         src: "{{ CI_PROJECT_DIR }}"
         dest: "{{ BUILD_DIR }}"
