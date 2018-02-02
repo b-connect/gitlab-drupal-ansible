@@ -23,6 +23,20 @@ then
   echo "$SSH_KEY" > /key.priv
 fi
 
+if [ -z "$DRUPAL_DOCROOT" ]
+then
+  export DRUPAL_DOCROOT="docroot";
+fi
+
+if [ -z "$EXLUDE_RSYNC" ]
+then
+  touch /excludes.txt
+  export EXCLUDE_RSYNC="${DRUPAL_DOCROOT}/sites/default/settings.php, ${DRUPAL_DOCROOT}/sites/default/files"
+  echo $EXCLUDE_RSYNC | sed -n 1'p' | tr ',' '\n' | while read word; do
+    echo >> /excludes.txt
+  done
+fi
+
 chmod 700 /key.priv
 chown root:root /key.priv
 

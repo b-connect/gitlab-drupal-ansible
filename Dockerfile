@@ -5,6 +5,6 @@ COPY runner.sh /usr/bin/runner
 
 RUN apk add --update git openssh-client
 RUN echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
-RUN chmod +x /usr/bin/runner
+RUN chmod +x /runner.sh
 
-CMD ["/usr/bin/runner"]
+CMD ["/runner.sh"]

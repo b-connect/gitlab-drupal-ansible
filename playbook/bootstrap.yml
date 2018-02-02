@@ -26,9 +26,11 @@
       synchronize:
         src: "{{ CI_PROJECT_DIR }}"
         dest: "{{ BUILD_DIR }}/.."
+        delete: true
         rsync_opts:
           - "--chmod=F664"
           - "--chmod=D775"
+          - "--exclude-from=/excludes.txt"
 
     - name: Add docksal.env file
       template:
