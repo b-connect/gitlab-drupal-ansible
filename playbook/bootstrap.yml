@@ -22,6 +22,8 @@
       synchronize:
         src: "{{ CI_PROJECT_DIR }}"
         dest: "{{ BUILD_DIR }}"
+        rsync_opts:
+          - "--chmod=F644"
 
     - name: Add docksal.env file
       template:
