@@ -22,7 +22,6 @@
       synchronize:
         src: "{{ CI_PROJECT_DIR }}"
         dest: "{{ BUILD_DIR }}"
-      delegate_to: "{{ inventory_hostname }}"
 
     - name: Add docksal.env file
       template:
