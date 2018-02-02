@@ -1,14 +1,24 @@
 # Variables
 
-```
-DEPLOY_HOST=<HOST-NAME_FOR-DEPLOY>
-CI_ENVIRONMENT_URL=<URL-FOR-DEPLOYMENT> | required
-CI_ENVIRONMENT_SLUG=<ENVIRONMENT_PATH> | required
-CI_PROJECT_PATH_SLUG=<ENVIRONMENT_PROJECT_PATH> | required
-DRUPAL_ACCOUNT_NAME=<USERNAME-FOR-INSTALL> | default "admin"
-DRUPAL_ACCOUNT_PASS=<PASS-FOR-INSTALL> | default "admin"
-DRUPAL_PROFILE=<PROFILE-TO-INSTALL> | default "standard"
-COMPOSER_INSTALL_FLAGS=<OPTIONAL-COMPOSER-FLAGS> | default "--quiet"
+```yml
+dev_deploy:
+  image: bconnect/gitlab-drupal-ansible
+  when: manual
+  stage: deploy
+  environment:
+    name: dev
+    url: http://my.dev.example.com
+  variables:
+    DEPLOY_USER: dev
+    DEPLOY_HOST: dev.b-connect.eu
+    DRUPAL_ACCOUNT_NAME: admin
+    DRUPAL_ACCOUNT_PASS: admin
+    DRUPAL_PROFILE: standard
+    DOCKSAL_ENV_FILE: ".docksal/docksal-local.env"
+    DRUPAL_SITE_INSTALL_FLAGS: " --config-dir=../config/sync"
+    COMPOSER_INSTALL_FLAGS: "--optimize-autoloader --quiet"
+  script:
+    - /usr/bin/runner
 ```
 
 

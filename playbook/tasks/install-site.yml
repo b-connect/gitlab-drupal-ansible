@@ -5,5 +5,20 @@
 - name: Install drupal site.
   shell: "source ~/.zshrc && fin drush si {{ DRUPAL_PROFILE }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
   args:
-    chdir: "{{ BUILD_DIR }}/docroot"
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
+  when: DRUPAL_SITE_CONFIG is undefined
+
+- name: Install drupal site from config.
+  shell: "source ~/.zshrc && fin drush si --config-dir=${DRUPAL_SITE_CONFIG} {{ DRUPAL_PROFILE }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
+  args:
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+    executable: /bin/zsh
+  when: DRUPAL_SITE_CONFIG is defined
+
+- name: Set config directory.
+  shell: "source ~/.zshrc && echo "\$config_directories['sync'] = '{{ DRUPAL_SITE_CONFIG }}';" >> sites/default/settings.php"
+  args:
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+    executable: /bin/zsh
+  when: DRUPAL_SITE_CONFIG is defined
