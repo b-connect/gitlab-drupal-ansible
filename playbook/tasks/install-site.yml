@@ -1,6 +1,7 @@
 ---
+
 - name: Install drupal site.
-  shell: "source ~/.zshrc && fin drush si {{ DRUPAL_PROFILE }} --db-url=mysql://root:root@db/drupal -y"
+  shell: "source ~/.zshrc && fin drush si {{ DRUPAL_PROFILE }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
   args:
     chdir: "{{ BUILD_DIR }}/docroot"
     executable: /bin/zsh
