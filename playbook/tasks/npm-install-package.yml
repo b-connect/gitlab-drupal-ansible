@@ -1,5 +1,0 @@
----
-- name: Install npm package
-  local_action:
-    npm:
-      path: {{ npm_path }}

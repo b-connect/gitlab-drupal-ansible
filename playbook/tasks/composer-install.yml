@@ -1,8 +1,8 @@
 ---
 - name: Install local composer.
   local_action:
-    composer:
-      command: "install"
-      optimize_autoloader: true
-      working_dir: "{{ CI_PROJECT_DIR }}"
-      ignore_platform_reqs: true
+    module: composer
+    command: "install"
+    optimize_autoloader: true
+    working_dir: "{{ CI_PROJECT_DIR }}"
+    ignore_platform_reqs: true
