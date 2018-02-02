@@ -5,7 +5,6 @@
     - CI_PROJECT_NAMESPACE: "{{ lookup('env','CI_PROJECT_NAMESPACE') | default('test-dev', true) }}"
     - CI_PROJECT_NAME: "{{ lookup('env','CI_PROJECT_NAME') | default('test-dev', true) }}"
     - CI_ENVIRONMENT_SLUG: "{{ lookup('env','CI_ENVIRONMENT_SLUG') | default('dev', true) }}"
-    - CI_COMMIT_SHA: "{{ lookup('env','CI_COMMIT_SHA') | default('dev', true) }}"
     - CI_REPOSITORY_URL: "{{ lookup('env','CI_REPOSITORY_URL') | default('dev', true) }}"
     - CI_PROJECT_DIR: "{{ lookup('env','CI_PROJECT_DIR') | default('/builds/gitlab-org/gitlab-ce', true) }}"
     - BUILD_DIR: "/home/{{ ansible_user }}/ansible/{{ CI_ENVIRONMENT_SLUG }}/{{ CI_PROJECT_NAMESPACE}}/{{ CI_PROJECT_NAME }}"
@@ -20,7 +19,7 @@
       synchronize:
         src: "{{ CI_PROJECT_DIR }}"
         dest: "{{ BUILD_DIR }}"
-      delegate_to: delegate.host
+      delegate_to: "{{ inventory_hostname }}"
 
     - name: Add docksal.env file
       template:
