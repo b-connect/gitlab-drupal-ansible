@@ -15,7 +15,7 @@ dev_deploy:
     DRUPAL_ACCOUNT_PASS: admin
     DRUPAL_PROFILE: standard
     DOCKSAL_ENV_FILE: ".docksal/docksal-local.env"
-    DRUPAL_SITE_INSTALL_FLAGS: " --config-dir=../config/sync"
+    DRUPAL_SITE_CONFIG: " --config-dir=../config/sync"
     COMPOSER_INSTALL_FLAGS: "--optimize-autoloader --quiet"
   script:
     - /usr/bin/runner
