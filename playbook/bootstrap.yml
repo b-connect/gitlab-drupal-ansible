@@ -21,8 +21,8 @@
 
     - name: "Sync local host to remote"
       synchronize:
-        src: "{{ CI_PROJECT_DIR }}/*"
-        dest: "{{ BUILD_DIR }}"
+        src: "{{ CI_PROJECT_DIR }}"
+        dest: "{{ BUILD_DIR }}/.."
         rsync_opts:
           - "--chmod=F664"
           - "--chmod=D775"
