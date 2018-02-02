@@ -1,0 +1,14 @@
+---
+- name: Found all npm packages.
+  local_action:
+    shell: "find {{ CI_PROJECT_DIR }}/{{ DRUPAL_DOCROOT }} -iname "package.json" -type f -printf '%h'"
+    register: npm_paths
+    args:
+      chdir: "{{ CI_PROJECT_DIR }}/{{ DRUPAL_DOCROOT }}"
+      executable: /bin/zsh
+- name: Start webpack
+  local_action:
+    shell:
+      path: "npm install && npm build:dev"
+      chdir: "{{ item }}"
+    with_items: {{ npm_paths }}

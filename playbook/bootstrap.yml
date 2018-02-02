@@ -22,6 +22,9 @@
     - name: "Check if directory exists"
       file: "path={{ BUILD_DIR }} state=directory"
 
+    - include_tasks: "tasks/composer-install.yml"
+    - include_tasks: "tasks/npm-install.yml"
+
     - name: "Sync local host to remote"
       synchronize:
         src: "{{ CI_PROJECT_DIR }}"
