@@ -23,6 +23,9 @@ then
   echo "$SSH_KEY" > /key.priv
 fi
 
+cd $CI_PROJECT_DIR
+ls -al
+
 chmod 700 /key.priv
 chown root:root /key.priv
 
