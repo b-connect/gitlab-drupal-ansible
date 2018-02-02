@@ -37,6 +37,7 @@ ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.
 RUN apk --update add ca-certificates
 RUN echo "@php https://php.codecasts.rocks/v3.7/php-7.1" >> /etc/apk/repositories
 RUN apk add --update php7@php
+RUN apk add --update php7-cli@php
 RUN apk add --update php7-curl@php
 RUN apk add --update php7-openssl@php
 RUN apk add --update php7-json@php
