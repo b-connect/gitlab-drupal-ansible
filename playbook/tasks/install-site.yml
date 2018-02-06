@@ -1,7 +1,4 @@
 ---
-- name: Show message
-  debug:
-    msg: "Install drupal with profile {{ DRUPAL_PROFILE }} and flags {{ DRUPAL_SITE_INSTALL_FLAGS }}"
 - name: Install drupal site.
   shell: "source ~/.zshrc && fin drush si {{ DRUPAL_PROFILE }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
   args:
@@ -17,7 +14,7 @@
   when: DRUPAL_SITE_CONFIG is defined
 
 - name: Set config directory.
-  shell: "echo \"\$config_directories['sync'] = '{{ DRUPAL_SITE_CONFIG }}';\" >> sites/default/settings.php"
+  shell: echo '$config_directories["sync"] = "{{ DRUPAL_SITE_CONFIG }}"' >> sites/default/settings.php
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
