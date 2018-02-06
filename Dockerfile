@@ -1,7 +1,6 @@
 FROM mhart/alpine-node:9
 
-ENV VERSION=v9.5.0 NPM_VERSION=5 YARN_VERSION=latest
-
+RUN apk add --update python make g++ libpng-dev autoconf zlib zlib-dev automake libtool nasm
 
 RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
     apk --update add sudo                                         && \
@@ -36,6 +35,7 @@ RUN echo "===> Installing sudo to emulate normal OS behavior..."  && \
 ADD https://php.codecasts.rocks/php-alpine.rsa.pub /etc/apk/keys/php-alpine.rsa.pub
 RUN apk --update add ca-certificates
 RUN echo "@php https://php.codecasts.rocks/v3.7/php-7.1" >> /etc/apk/repositories
+RUN apk add --update curl
 RUN apk add --update php7@php
 RUN apk add --update php7-cli@php
 RUN apk add --update php7-curl@php
@@ -43,12 +43,23 @@ RUN apk add --update php7-openssl@php
 RUN apk add --update php7-json@php
 RUN apk add --update php7-phar@php
 RUN apk add --update php7-dom@php
+RUN apk add --update php7-zip@php
+RUN apk add --update php7-iconv@php
+RUN apk add --update php7-curl@php
+RUN apk add --update php7-zlib@php
+RUN apk add --update php7-ctype@php
+
+
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+RUN composer --version
+
+RUN apk add --update git openssh-client
+RUN echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 
 COPY playbook /playbook
 COPY runner.sh /runner.sh
 
-RUN apk add --update git openssh-client
-RUN echo -e "StrictHostKeyChecking no" >> /etc/ssh/ssh_config
 RUN chmod +x /runner.sh
 
 CMD ["/runner.sh"]

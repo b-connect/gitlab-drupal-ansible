@@ -1,8 +1,13 @@
 ---
 - name: Found all npm packages.
-  local_action: "cd {{ CI_PROJECT_DIR }}/{{ DRUPAL_DOCROOT }} && find {{ CI_PROJECT_DIR }}/{{ DRUPAL_DOCROOT }} -iname "package.json" -type f -printf '%h'"
+  local_action:
+    module: find
+    patterns: 'package.json'
+    paths: "{{ CI_PROJECT_DIR }}"
+    recurse: true
   register: npm_paths
 
 - name: Start webpack
-  local_action: "cd {{ item }} && npm install && npm build:dev"
-  with_items: {{ npm_paths }}
+  local_action: "shell cd {{ item.path | dirname }} && npm install && npm start && rm -rf node_modules"
+  with_items: "{{ npm_paths.files | list }}"
+  when: npm_paths is defined
