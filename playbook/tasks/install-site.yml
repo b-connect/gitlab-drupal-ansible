@@ -29,7 +29,6 @@
 
 - name: Set site uuid
   shell: fin drush config-set "system.site" uuid "{{ DRUPAL_SITE_UUID }}"
-  register: DRUPAL_SITE_UUID
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
