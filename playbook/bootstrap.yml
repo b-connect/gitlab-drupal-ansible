@@ -19,11 +19,11 @@
     - DRUPAL_DOCROOT: "{{ lookup('env','DRUPAL_DOCROOT') | default('docroot', true) }}"
 
   tasks:
-    - name: "Check if directory exists"
-      file: "path={{ BUILD_DIR }} state=directory"
-
     - include_tasks: "tasks/npm-install.yml"
     - include_tasks: "tasks/composer-install.yml"
+
+    - name: "Check if directory exists"
+      file: "path={{ BUILD_DIR }} state=directory"
 
     - name: "Sync local host to remote"
       synchronize:
