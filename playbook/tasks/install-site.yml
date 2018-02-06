@@ -17,7 +17,7 @@
   when: DRUPAL_SITE_CONFIG is defined
 
 - name: Set config directory.
-  shell: "source ~/.zshrc && echo \"$config_directories['sync'] = '{{ DRUPAL_SITE_CONFIG }}';\" >> sites/default/settings.php"
+  shell: "echo \"\$config_directories['sync'] = '{{ DRUPAL_SITE_CONFIG }}';\" >> sites/default/settings.php"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
