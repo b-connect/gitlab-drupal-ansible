@@ -21,11 +21,10 @@
   when: DRUPAL_SITE_CONFIG is defined
 
 - name: Check for site uuid
-  shell: grep -E -o "\b[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+" {{ DRUPAL_SITE_CONFIG }}/system.site.yml
+  command: grep -E -o "\b[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+" {{ DRUPAL_SITE_CONFIG }}/system.site.yml
   register: DRUPAL_SITE_UUID
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG is defined
 
 - name: Set site uuid
