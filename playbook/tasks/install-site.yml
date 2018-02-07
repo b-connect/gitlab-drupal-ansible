@@ -28,7 +28,7 @@
   when: DRUPAL_SITE_CONFIG is defined
 
 - name: Set site uuid
-  shell: fin drush config-set "system.site" uuid "{{ DRUPAL_SITE_UUID }}"
+  shell: fin drush config-set "system.site" uuid "{{ DRUPAL_SITE_UUID }}" -y
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
