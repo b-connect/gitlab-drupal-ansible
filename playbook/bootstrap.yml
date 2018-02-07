@@ -7,7 +7,9 @@
     - CI_ENVIRONMENT_SLUG: "{{ lookup('env','CI_ENVIRONMENT_SLUG') | default('dev', true) }}"
     - CI_REPOSITORY_URL: "{{ lookup('env','CI_REPOSITORY_URL') | default('dev', true) }}"
     - CI_PROJECT_DIR: "{{ lookup('env','CI_PROJECT_DIR') | default('/builds/gitlab-org/gitlab-ce', true) }}"
-    - BUILD_DIR: "/home/{{ ansible_user }}/ansible/{{ CI_ENVIRONMENT_SLUG }}/{{ CI_PROJECT_NAMESPACE}}/{{ CI_PROJECT_NAME }}"
+    - CI_COMMIT_REF_NAME: "{{ lookup('env','CI_COMMIT_REF_NAME') }}"
+    - CI_COMMIT_REF_SLUG: "{{ lookup('env','CI_COMMIT_REF_SLUG') }}"
+    - BUILD_DIR: "/home/{{ ansible_user }}/ansible/{{ CI_PROJECT_NAMESPACE}}/{{ CI_PROJECT_NAME }}/{{ CI_ENVIRONMENT_SLUG }}"
     - DOCKSAL_ENV_FILE: "{{ BUILD_DIR }}/.docksal/docksal-local.env"
     - DOCKSAL_ADD_VIRTUAL_HOSTS: "{{ lookup('env','DOCKSAL_ADD_VIRTUAL_HOSTS') }}"
     - DRUPAL_SITE_INSTALL_FLAGS: "{{ lookup('env','DRUPAL_SITE_INSTALL_FLAGS') | default('', true) }}"
@@ -20,6 +22,10 @@
     - DRUPAL_FEATURE_REVERT: "{{ lookup('env','DRUPAL_FEATURE_REVERT') }}"
 
   tasks:
+    - name: Show install path
+      debug:
+        msg: "Install to {{ BUILD_DIR }}/. Source dir {{ CI_PROJECT_DIR }}"
+
     - include_tasks: "tasks/npm-install.yml"
     - include_tasks: "tasks/composer-install.yml"
 
@@ -28,8 +34,8 @@
 
     - name: "Sync local host to remote"
       synchronize:
-        src: "{{ CI_PROJECT_DIR }}"
-        dest: "{{ BUILD_DIR }}/.."
+        src: "{{ CI_PROJECT_DIR }}/"
+        dest: "{{ BUILD_DIR }}"
         delete: true
         rsync_opts:
           - "--chmod=F664"
@@ -57,6 +63,9 @@
       register: drupal_site_installed
       failed_when: "drupal_site_installed.stdout is undefined"
       changed_when: false
+
+    - include_tasks: "tasks/backup-site.yml"
+      when: drupal_site_installed
 
     - include_tasks: "tasks/install-site.yml"
       when: drupal_site_installed != true
