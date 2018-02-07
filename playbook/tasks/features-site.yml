@@ -1,0 +1,11 @@
+---
+- name: Check for features.
+  command: find drush pm-list --status=enabled | grep "(features)"
+  args:
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+  result: drupal_features_installed
+  when: drupal_features_installed.stout != ""
+
+- name: Revert features
+  command: fin drush fia -y
+  when: drupal_features_installed

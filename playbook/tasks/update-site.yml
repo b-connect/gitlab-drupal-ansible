@@ -1,9 +1,9 @@
 ---
-- name: Import configs
-  shell: "source ~/.zshrc && fin drush cim -y"
-  args:
-    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
+# - name: Import configs
+#   shell: "source ~/.zshrc && fin drush cim -y"
+#   args:
+#     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+#     executable: /bin/zsh
 
 - name: Update db
   shell: "source ~/.zshrc && fin drush updatedb --entity-updates -y"

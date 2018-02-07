@@ -17,6 +17,7 @@
     - DRUPAL_ACCOUNT_NAME: "{{ lookup('env','DRUPAL_ACCOUNT_NAME') | default('admin', true) }}"
     - DRUPAL_ACCOUNT_PASS: "{{ lookup('env','DRUPAL_ACCOUNT_PASS') | default('admin', true) }}"
     - DRUPAL_DOCROOT: "{{ lookup('env','DRUPAL_DOCROOT') | default('docroot', true) }}"
+    - DRUPAL_FEATURE_REVERT: "{{ lookup('env','DRUPAL_FEATURE_REVERT') }}"
 
   tasks:
     - include_tasks: "tasks/npm-install.yml"
@@ -72,6 +73,9 @@
 
     - include_tasks: "tasks/update-site.yml"
       when: drupal_site_installed
+
+    - include: "tasks/features-site.yml"
+      when: DRUPAL_FEATURE_REVERT is defined
 
     - name: Clear drupal cache
       shell: source ~/.zshrc && fin drush cr
