@@ -6,35 +6,16 @@
     executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG is undefined
 
-- name: Install drupal site from config.
+- name: Install drupal site from config
   shell: "source ~/.zshrc && fin drush si --config-dir={{ DRUPAL_SITE_CONFIG }} {{ DRUPAL_PROFILE }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG is defined
 
-- name: Set config directory.
-  shell: fin exec "echo '\$config_dir[CONFIG_SYNC_DIRECTORY]=\"{{ DRUPAL_SITE_CONFIG }}\";' | sudo tee --append /var/www/docroot/sites/default/settings.php"
+- name: Add config directory to settings.php
+  shell: fin exec "echo '\$config_directories[CONFIG_SYNC_DIRECTORY]=\"{{ DRUPAL_SITE_CONFIG }}\";' | sudo tee --append /var/www/docroot/sites/default/settings.php"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG is defined
-
-- name: Check for site uuid
-  command: grep -E -o "\b[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+\-[0-9a-zA-Z\-]+" {{ DRUPAL_SITE_CONFIG }}/system.site.yml | tr -d '[:space:]'
-  register: DRUPAL_SITE_UUID
-  args:
-    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-  when: DRUPAL_SITE_CONFIG is defined
-
-- name: Set site uuid
-  debug:
-    msg: "Set to UUID {{ DRUPAL_SITE_UUID.stdout }}"
-  when: DRUPAL_SITE_UUID is defined
-
-- name: Set site uuid
-  shell: fin drush config-set system.site uuid "{{ DRUPAL_SITE_UUID.stdout }}" -y
-  args:
-    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
-  when: DRUPAL_SITE_UUID is defined

@@ -1,5 +1,5 @@
 ---
-- name: Found all npm packages.
+- name: Fin all npm packages
   local_action:
     module: find
     patterns: 'package.json'
