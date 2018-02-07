@@ -8,4 +8,4 @@
 
 - name: Revert features
   command: fin drush fia -y
-  when: drupal_features_installed
+  when: drupal_features_installed is defined

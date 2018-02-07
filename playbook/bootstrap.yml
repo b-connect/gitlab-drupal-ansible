@@ -74,7 +74,7 @@
     - include_tasks: "tasks/update-site.yml"
       when: drupal_site_installed
 
-    - include: "tasks/features-site.yml"
+    - include_tasks: "tasks/features-site.yml"
       when: DRUPAL_FEATURE_REVERT is defined
 
     - name: Clear drupal cache
