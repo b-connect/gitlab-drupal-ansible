@@ -3,7 +3,7 @@
   command: find drush pm-list --status=enabled | grep "(features)"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-  result: drupal_features_installed
+  register: drupal_features_installed
   when: drupal_features_installed.stout != ""
 
 - name: Revert features
