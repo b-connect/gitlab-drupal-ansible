@@ -2,3 +2,5 @@ hosts
 test.env
 docker-compose.yml
 key.priv
+bp.sh
+test.*

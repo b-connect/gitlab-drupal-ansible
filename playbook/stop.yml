@@ -1,0 +1,24 @@
+---
+- hosts: all
+  - include_tasks: "tasks/set_fact.yml"
+
+  - name: Stop docksal container
+    shell: source ~/.zshrc && echo y | fin remove
+    args:
+      chdir: "{{ BUILD_DIR }}"
+      executable: /bin/zsh
+    ignore_errors: yes
+
+  - name: Chown all files
+    shell: fin exec "sudo chmod 777 /var/www -R"
+    args:
+      chdir: "{{ BUILD_DIR }}"
+      executable: /bin/zsh
+    ignore_errors: yes
+
+  - name: Remove directory
+    shell: "rm -rf {{ BUILD_DIR }}"
+    args:
+      chdir: "{{ BUILD_DIR }}"
+      executable: /bin/zsh
+    ignore_errors: yes

@@ -1,16 +1,24 @@
 ---
 - name: "Check backup directory exists"
-  file: "path={{ BUILD_DIR }}/../backups state=directory"
+  file:
+    path: "{{ BACKUP_DIR }}/"
+    state: directory
+
+- name: "Check how many backups exists"
+  shell: "fin drush sql-dump > {{ BACKUP_DIR }}/backup-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.sql"
+  args:
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+    executable: /bin/zsh
 
 - name: "Check how many backups exists"
   shell: ls -ltc
   args:
-    chdir: "{{ BUILD_DIR }}/../backups"
+    chdir: "{{ BACKUP_DIR }}"
     executable: /bin/zsh
   register: files
 
-- name: "Check how many backups exists"
-  shell: "fin drush mysql-dump > ../../backups/backup-{{ CI_COMMIT_REF_NAME }}-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.sql"
-  args:
-    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
+- set_fact:
+    num_files: "{{ files.stdout_lines|list|length }}"
+
+- debug:
+    msg: "Found {{ num_files }} files"

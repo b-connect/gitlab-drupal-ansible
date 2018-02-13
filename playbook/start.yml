@@ -1,0 +1,72 @@
+---
+- hosts: all
+  vars:
+
+  tasks:
+    - include_tasks: "tasks/set_fact.yml"
+    - debug:
+        msg: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+    - name: Show install path
+      debug:
+        msg: "Install to {{ BUILD_DIR }}/. Source dir {{ CI_PROJECT_DIR }}"
+
+    - include_tasks: "tasks/npm-install.yml"
+    - include_tasks: "tasks/composer-install.yml"
+
+    - name: "Check if directory exists"
+      file: "path={{ BUILD_DIR }} state=directory"
+
+    - name: "Sync local host to remote"
+      synchronize:
+        src: "{{ CI_PROJECT_DIR }}/"
+        dest: "{{ BUILD_DIR }}"
+        delete: true
+        rsync_opts:
+          - "--chmod=F664"
+          - "--chmod=D775"
+          - "--exclude-from=/excludes.txt"
+
+    - name: Add docksal.env file
+      template:
+        src: ../templates/docksal.env.j2
+        dest: "{{ DOCKSAL_ENV_FILE }}"
+        force: true
+
+    - name: Restart docksal container with fin up
+      shell: source ~/.zshrc && fin up
+      register: output
+      args:
+        executable: /bin/zsh
+        chdir: "{{ BUILD_DIR }}"
+
+    - pause:
+        seconds: 5
+
+    - name: Check if site is already installed.
+      shell: fin drush status bootstrap
+      args:
+        chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+        executable: /bin/zsh
+      register: drupal_site_installed
+
+    - debug:
+        msg: "{{ drupal_site_installed }}"
+
+    - include_tasks: "tasks/backup-site.yml"
+      when: drupal_check == true
+
+    - include_tasks: "tasks/install-site.yml"
+      when: drupal_check != true
+
+    - include_tasks: "tasks/update-site.yml"
+      when: drupal_check == true
+
+    - include_tasks: "tasks/features-site.yml"
+      when: DRUPAL_FEATURE_REVERT is defined
+
+    - name: Clear drupal cache
+      shell: source ~/.zshrc && fin drush cr
+      args:
+        executable: /bin/zsh
+        chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+      ignore_errors: yes
