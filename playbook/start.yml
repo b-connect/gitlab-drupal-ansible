@@ -53,9 +53,9 @@
     - include_tasks: "tasks/features-site.yml"
       when: DRUPAL_FEATURE_REVERT is defined
 
-    # - name: Clear drupal cache
-    #   shell: source ~/.zshrc && fin drush cr
-    #   args:
-    #     executable: /bin/zsh
-    #     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    #   ignore_errors: yes
+    - name: Clear drupal cache
+      shell: source ~/.zshrc && fin drush cr
+      args:
+        executable: /bin/zsh
+        chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+      ignore_errors: yes
