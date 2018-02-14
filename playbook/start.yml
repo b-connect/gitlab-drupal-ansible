@@ -4,9 +4,6 @@
 
   tasks:
     - include_tasks: "tasks/set_fact.yml"
-    - debug:
-        msg: "Install a new drupal site"
-      when: drupal_check != true
 
     - name: Show install path
       debug:
@@ -41,8 +38,10 @@
         executable: /bin/zsh
         chdir: "{{ BUILD_DIR }}"
 
-    # - include_tasks: "tasks/backup-site.yml"
-    #   when: drupal_check == true
+    - include_tasks: "tasks/check-site-status.yml"
+
+    - include_tasks: "tasks/backup-site.yml"
+      when: drupal_check == true
 
     - include_tasks: "tasks/install-site.yml"
       when: drupal_check != true

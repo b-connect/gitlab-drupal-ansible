@@ -26,13 +26,3 @@
     DRUPAL_FEATURE_REVERT: "{{ lookup('env','DRUPAL_FEATURE_REVERT') }}"
     DRUPAL_INSTALLED: false
     drupal_check: false
-
-- name: "Check for site installation"
-  stat:
-    path: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}/sites/default/settings.php"
-  register: drupal_file_check
-
-- name: "Set installed status"
-  set_fact:
-    drupal_check: true
-  when: drupal_file_check.stat.exists

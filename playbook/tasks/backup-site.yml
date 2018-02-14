@@ -10,15 +10,16 @@
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
 
-- name: "Check how many backups exists"
-  shell: ls -ltc
-  args:
-    chdir: "{{ BACKUP_DIR }}"
-    executable: /bin/zsh
-  register: files
+- find: path="{{ BACKUP_DIR }}"
+  register: backup_files
 
 - set_fact:
-    num_files: "{{ files.stdout_lines|list|length }}"
+    max_files: 5
+    num_files: "{{ backup_files.files|list|length|int }}"
 
-- debug:
-    msg: "Found {{ num_files }} files"
+- set_fact:
+    diff: "{{ (num_files|int) - (max_files|int) }}"
+
+- shell: "rm -rf {{ item }}"
+  when: (num_files|int) > (max_files|int)
+  with_items: "{{ (backup_files.files | sort(attribute='ctime') | map(attribute='path') | list  | list)[:(diff|int)] }}"

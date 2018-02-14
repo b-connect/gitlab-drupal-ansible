@@ -33,12 +33,15 @@ fi
 
 if [ -z "$EXLUDE_RSYNC" ]
 then
-  touch /excludes.txt
-  export EXCLUDE_RSYNC="${DRUPAL_DOCROOT}/sites/default/settings.php,${DRUPAL_DOCROOT}/sites/default/files,.docksal"
-  echo $EXCLUDE_RSYNC | sed -n 1'p' | tr ',' '\n' | while read word; do
-    echo >> /excludes.txt
-  done
+  export EXCLUDE_RSYNC="${DRUPAL_DOCROOT}/sites/default/settings.php,${DRUPAL_DOCROOT}/sites/default/files, .docksal"
 fi
+
+entries=$(echo $EXCLUDE_RSYNC | tr "," "\n")
+
+for entry in $entries
+do
+    echo $entry >> /excludes.txt
+done
 
 chmod 700 /key.priv
 chown root:root /key.priv

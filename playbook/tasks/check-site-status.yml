@@ -1,0 +1,16 @@
+---
+- name: "Check site status"
+  shell: "fin drush status bootstrap"
+  args:
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+    executable: /bin/zsh
+  register: drupal_site_status
+  ignore_errors: yes
+
+- name: "Set site installation status"
+  set_fact:
+    drupal_check: true
+  when: drupal_status.stdout | regex_search('Successful')
+
+- debug:
+    msg: "{{ drupal_site_status }}"
