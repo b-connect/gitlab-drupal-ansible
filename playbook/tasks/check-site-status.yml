@@ -10,7 +10,7 @@
 - name: "Set site installation status"
   set_fact:
     drupal_check: true
-  when: drupal_status.stdout | regex_search('Successful')
+  when: drupal_site_status.stdout | regex_search('Successful')
 
 - debug:
     msg: "{{ drupal_site_status }}"
