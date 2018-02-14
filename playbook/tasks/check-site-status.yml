@@ -11,6 +11,3 @@
   set_fact:
     drupal_check: true
   when: drupal_site_status.stdout | regex_search('Successful')
-
-- debug:
-    msg: "{{ drupal_site_status }}"

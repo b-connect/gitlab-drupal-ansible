@@ -24,5 +24,10 @@
     DRUPAL_ACCOUNT_PASS: "{{ lookup('env','DRUPAL_ACCOUNT_PASS') | default('admin', true) }}"
     DRUPAL_DOCROOT: "{{ lookup('env','DRUPAL_DOCROOT') | default('docroot', true) }}"
     DRUPAL_FEATURE_REVERT: "{{ lookup('env','DRUPAL_FEATURE_REVERT') }}"
+    DRUPAL_MAX_BACKUP_FILES: "{{ lookup('env','DRUPAL_MAX_BACKUP_FILES') | default(3, true) }}"
     DRUPAL_INSTALLED: false
     drupal_check: false
+    VIRTUAL_HOST: "{{ CI_ENVIRONMENT_URL }}"
+- set_fact:
+    VIRTUAL_HOST: "{{ VIRTUAL_HOST }}, {{ DOCKSAL_ADD_VIRTUAL_HOSTS }}"
+    when: DOCKSAL_ADD_VIRTUAL_HOSTS is defined

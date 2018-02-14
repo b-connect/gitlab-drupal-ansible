@@ -7,13 +7,18 @@
 
     - name: Show install path
       debug:
-        msg: "Install to {{ BUILD_DIR }}/. Source dir {{ CI_PROJECT_DIR }}"
+        msg: "Install to {{ BUILD_DIR }}"
 
     - include_tasks: "tasks/npm-install.yml"
     - include_tasks: "tasks/composer-install.yml"
 
     - name: "Check if directory exists"
       file: "path={{ BUILD_DIR }} state=directory"
+
+    - include_tasks: "tasks/check-site-status.yml"
+
+    - include_tasks: "tasks/backup-site.yml"
+      when: drupal_check == true && DRUPAL_MAX_BACKUP_FILES > 0
 
     - name: "Sync local host to remote"
       synchronize:
@@ -37,11 +42,6 @@
       args:
         executable: /bin/zsh
         chdir: "{{ BUILD_DIR }}"
-
-    - include_tasks: "tasks/check-site-status.yml"
-
-    - include_tasks: "tasks/backup-site.yml"
-      when: drupal_check == true
 
     - include_tasks: "tasks/install-site.yml"
       when: drupal_check != true

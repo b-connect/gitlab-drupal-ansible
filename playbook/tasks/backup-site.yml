@@ -14,12 +14,10 @@
   register: backup_files
 
 - set_fact:
-    max_files: 5
-    num_files: "{{ backup_files.files|list|length|int }}"
+    diff: "{{ (backup_files.files|list|length|int) - (DRUPAL_MAX_BACKUP_FILES|int)}}"
 
-- set_fact:
-    diff: "{{ (num_files|int) - (max_files|int) }}"
-
-- shell: "rm -rf {{ item }}"
-  when: (num_files|int) > (max_files|int)
+- file:
+    state: absent
+    path: "{{ item }}"
+  when: diff > 1
   with_items: "{{ (backup_files.files | sort(attribute='ctime') | map(attribute='path') | list  | list)[:(diff|int)] }}"

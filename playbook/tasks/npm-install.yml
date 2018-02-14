@@ -1,5 +1,5 @@
 ---
-- name: Fin all npm packages
+- name: Find all npm packages
   local_action:
     module: find
     patterns: 'package.json'
@@ -7,7 +7,10 @@
     recurse: true
   register: npm_paths
 
+- debug:
+    msg: "{{ npm_paths }}"
+
 - name: Start webpack
-  local_action: "shell cd {{ item.path | dirname }} && npm install && npm start && rm -rf node_modules"
+  local_action: "shell cd {{ item.path | dirname }} && npm install && npm start"
   with_items: "{{ npm_paths.files | list }}"
   when: npm_paths is defined
