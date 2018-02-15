@@ -1,15 +1,24 @@
 ---
-- name: "Migrate files"
-  shell: "fin drush sql-drop -y && fin drush sql-cli < DRUPAL_MIGRATE_DB"
+- name: "Migrate db"
+  shell: "fin db import --db=drupal < {{ DRUPAL_MIGRATE_DB }}"
   args:
-    chdir: "{{ BUILD_DIR }}/{{ BUILD_DOCROOT }}"
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
   when: DRUPAL_MIGRATE_DB != false
 
-- name: "Migrate db"
+- name: "Migrate files"
   synchronize:
     archive: yes
     src: "{{ DRUPAL_MIGRATE_FILES }}/"
-    dest: "{{ BUILD_DIR }}/{{ BUILD_DOCROOT }}/sites/default/files/"
+    dest: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}/sites/default/files/"
     delete: true
+  delegate_to: "{{ inventory_hostname }}"
   when: DRUPAL_MIGRATE_FILES != false
+
+- name: Clear drupal cache
+  shell: source ~/.zshrc && fin drush cr
+  args:
+    executable: /bin/zsh
+    chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+  ignore_errors: yes
+  when: DRUPAL_MIGRATE_DB != false
