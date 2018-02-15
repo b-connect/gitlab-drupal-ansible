@@ -15,10 +15,10 @@
     COMPOSER_INSTALL_FLAGS: "{{ lookup('env','COMPOSER_INSTALL_FLAGS') | default('', true) }}"
 - set_fact:
     DOCKSAL_ENV_FILE: "{{ BUILD_DIR }}/.docksal/docksal-local.env"
-    DOCKSAL_ADD_VIRTUAL_HOSTS: "{{ lookup('env','DOCKSAL_ADD_VIRTUAL_HOSTS') }}"
+    DOCKSAL_ADD_VIRTUAL_HOSTS: "{{ lookup('env','DOCKSAL_ADD_VIRTUAL_HOSTS')| default(false, true)  }}"
 - set_fact:
     DRUPAL_SITE_INSTALL_FLAGS: "{{ lookup('env','DRUPAL_SITE_INSTALL_FLAGS') | default('', true) }}"
-    DRUPAL_SITE_CONFIG: "{{ lookup('env','DRUPAL_SITE_CONFIG') }}"
+    DRUPAL_SITE_CONFIG: "{{ lookup('env','DRUPAL_SITE_CONFIG') | default(false, true) }}"
     DRUPAL_PROFILE: "{{ lookup('env','DRUPAL_PROFILE') | default('standard', true) }}"
     DRUPAL_ACCOUNT_NAME: "{{ lookup('env','DRUPAL_ACCOUNT_NAME') | default('admin', true) }}"
     DRUPAL_ACCOUNT_PASS: "{{ lookup('env','DRUPAL_ACCOUNT_PASS') | default('admin', true) }}"
@@ -29,5 +29,5 @@
     drupal_check: false
     VIRTUAL_HOST: "{{ CI_ENVIRONMENT_URL }}"
 - set_fact:
-    VIRTUAL_HOST: "{{ VIRTUAL_HOST }}, {{ DOCKSAL_ADD_VIRTUAL_HOSTS }}"
+    VIRTUAL_HOST: "{{ VIRTUAL_HOST }}{% if DOCKSAL_ADD_VIRTUAL_HOSTS != false %},{{ DOCKSAL_ADD_VIRTUAL_HOSTS }}{% endif %}"
     when: DOCKSAL_ADD_VIRTUAL_HOSTS is defined

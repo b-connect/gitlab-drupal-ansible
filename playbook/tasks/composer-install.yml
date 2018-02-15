@@ -6,3 +6,10 @@
     optimize_autoloader: true
     working_dir: "{{ CI_PROJECT_DIR }}"
     ignore_platform_reqs: true
+
+# - name: Install local composer.
+#   composer:
+#     command: "install"
+#     optimize_autoloader: true
+#     working_dir: "{{ BUILD_DIR }}"
+#     ignore_platform_reqs: true

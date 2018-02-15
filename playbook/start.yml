@@ -5,6 +5,20 @@
   tasks:
     - include_tasks: "tasks/set_fact.yml"
 
+    - stat:
+        path: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}./docksal"
+      register: docksal
+
+    - name: Restart docksal container with fin up
+      shell: source ~/.zshrc && fin up
+      when: docksal.stat.exists
+      args:
+        executable: /bin/zsh
+        chdir: "{{ BUILD_DIR }}"
+
+    - name: "Include site status check"
+      include_tasks: "tasks/check-site-status.yml"
+
     - name: Show install path
       debug:
         msg: "Install to {{ BUILD_DIR }}"
@@ -15,19 +29,17 @@
     - name: "Check if directory exists"
       file: "path={{ BUILD_DIR }} state=directory"
 
-    - include_tasks: "tasks/check-site-status.yml"
-
-    - include_tasks: "tasks/backup-site.yml"
-      when: drupal_check == true && DRUPAL_MAX_BACKUP_FILES > 0
+    - name: "Include backup tasks"
+      include_tasks: "tasks/backup-site.yml"
+      when: drupal_check == true and DRUPAL_MAX_BACKUP_FILES > 0
 
     - name: "Sync local host to remote"
       synchronize:
+        archive: yes
         src: "{{ CI_PROJECT_DIR }}/"
         dest: "{{ BUILD_DIR }}"
         delete: true
         rsync_opts:
-          - "--chmod=F664"
-          - "--chmod=D775"
           - "--exclude-from=/excludes.txt"
 
     - name: Add docksal.env file
@@ -38,12 +50,12 @@
 
     - name: Restart docksal container with fin up
       shell: source ~/.zshrc && fin up
-      register: output
       args:
         executable: /bin/zsh
         chdir: "{{ BUILD_DIR }}"
 
-    - include_tasks: "tasks/install-site.yml"
+    - name: "Include site installation"
+      include_tasks: "tasks/install-site.yml"
       when: drupal_check != true
 
     - include_tasks: "tasks/update-site.yml"

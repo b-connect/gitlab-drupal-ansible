@@ -1,4 +1,8 @@
 ---
+- stat:
+    path: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
+  register: drupal_exists
+
 - name: "Check site status"
   shell: "fin drush status bootstrap"
   args:
@@ -6,8 +10,16 @@
     executable: /bin/zsh
   register: drupal_site_status
   ignore_errors: yes
+  when: drupal_exists.stat.exists
 
-- name: "Set site installation status"
-  set_fact:
+- set_fact:
     drupal_check: true
-  when: drupal_site_status.stdout | regex_search('Successful')
+  when: drupal_exists.stat.exists and "Successful" in drupal_site_status.stdout
+
+- debug:
+    msg: "Site already installed."
+  when: drupal_check == true
+
+- debug:
+    msg: "Install new site."
+  when: drupal_check == false

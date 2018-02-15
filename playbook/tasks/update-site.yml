@@ -1,6 +1,7 @@
 ---
 - name: Import configs
   shell: "source ~/.zshrc && fin drush cim -y"
+  when: DRUPAL_SITE_CONFIG != false
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
     executable: /bin/zsh
