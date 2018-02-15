@@ -1,7 +1,4 @@
 ---
-- debug:
-    msg: "fin drush si {{ DRUPAL_PROFILE }} --account-name={{ DRUPAL_ACCOUNT_NAME }} --account-pass={{ DRUPAL_ACCOUNT_PASS }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
-
 - name: Install drupal site.
   shell: "fin drush si {{ DRUPAL_PROFILE }} --account-name={{ DRUPAL_ACCOUNT_NAME }} --account-pass={{ DRUPAL_ACCOUNT_PASS }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
   register: output

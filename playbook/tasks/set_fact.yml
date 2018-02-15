@@ -28,6 +28,8 @@
     DRUPAL_INSTALLED: false
     drupal_check: false
     VIRTUAL_HOST: "{{ CI_ENVIRONMENT_URL }}"
+    DRUPAL_MIGRATE_FILES: "{{ lookup('env','DRUPAL_MIGRATE_FILES') | default(false, true) }}"
+    DRUPAL_MIGRATE_DB: "{{ lookup('env','DRUPAL_MIGRATE_DB') | default(false, true) }}"
 - set_fact:
     VIRTUAL_HOST: "{{ VIRTUAL_HOST }}{% if DOCKSAL_ADD_VIRTUAL_HOSTS != false %},{{ DOCKSAL_ADD_VIRTUAL_HOSTS }}{% endif %}"
     when: DOCKSAL_ADD_VIRTUAL_HOSTS is defined

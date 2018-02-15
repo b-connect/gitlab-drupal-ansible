@@ -1,0 +1,15 @@
+---
+- name: "Migrate files"
+  shell: "fin drush sql-drop -y && fin drush sql-cli < DRUPAL_MIGRATE_DB"
+  args:
+    chdir: "{{ BUILD_DIR }}/{{ BUILD_DOCROOT }}"
+    executable: /bin/zsh
+  when: DRUPAL_MIGRATE_DB != false
+
+- name: "Migrate db"
+  synchronize:
+    archive: yes
+    src: "{{ DRUPAL_MIGRATE_FILES }}/"
+    dest: "{{ BUILD_DIR }}/{{ BUILD_DOCROOT }}/sites/default/files/"
+    delete: true
+  when: DRUPAL_MIGRATE_FILES != false

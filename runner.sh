@@ -15,15 +15,16 @@ if [ -z "$PLAYBOOK" ]; then
     export PLAYBOOK="/playbook/start.yml"
 fi
 
-ssh-keyscan ${DEPLOY_HOST}  2> /dev/null
-
 echo "Starting ansible script";
 
 echo "-- ADD SSH KEY --";
 
 if ! [ -f "/key.priv" ]
 then
-  echo "$SSH_KEY" > /key.priv
+  mkdir /root/.ssh
+  echo "$SSH_KEY" > /root/.ssh/id_rsa
+  chmod 700 /root/.ssh/id_rsa
+  chown root:root /root/.ssh/id_rsa
 fi
 
 if [ -z "$DRUPAL_DOCROOT" ]
@@ -43,9 +44,6 @@ do
     echo $entry >> /excludes.txt
 done
 
-chmod 700 /key.priv
-chown root:root /key.priv
-
 echo "Checkout: ${CI_REPOSITORY_URL}"
 
 echo ${DEPLOY_HOST} > /inventory
@@ -60,4 +58,6 @@ then
   export PLAYBOOK="/playbook/stop.yml"
 fi
 
-ansible-playbook $PLAYBOOK -u $DEPLOY_USER --inventory /inventory --private-key /key.priv
+export ANSIBLE_HOST_KEY_CHECKING=False
+
+ansible-playbook $PLAYBOOK -u $DEPLOY_USER --inventory /inventory
