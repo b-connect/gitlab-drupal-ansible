@@ -1,4 +1,4 @@
-FROM bconnect/gitlab-base:1.1
+FROM bconnect/gitlab-base:1.2
 
 COPY playbook /playbook
 COPY runner.sh /runner.sh
