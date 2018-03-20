@@ -1,0 +1,5 @@
+---
+- name: Start webpack
+  local_action: "shell cd {{ item | dirname }} && npm install --quiet && npm start"
+  with_items: "{{ NPM_INSTALL_PATHS.split(",") | list }}"
+  when: NPM_INSTALL_PATHS != false

@@ -33,3 +33,5 @@
 - set_fact:
     VIRTUAL_HOST: "{{ VIRTUAL_HOST }}{% if DOCKSAL_ADD_VIRTUAL_HOSTS != false %},{{ DOCKSAL_ADD_VIRTUAL_HOSTS }}{% endif %}"
     when: DOCKSAL_ADD_VIRTUAL_HOSTS is defined
+- set_fact:
+    NPM_INSTALL_PATHS: "{{ lookup('env','NPM_INSTALL_PATHS') | default(false, true) }}"

@@ -23,7 +23,9 @@
       debug:
         msg: "Install to {{ BUILD_DIR }}"
 
+
     - include_tasks: "tasks/npm-install.yml"
+    - include_tasks: "tasks/npm-install-direct.yml"
     - include_tasks: "tasks/composer-install.yml"
 
     - name: "Check if directory exists"

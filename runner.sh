@@ -17,8 +17,6 @@ fi
 
 echo "Starting ansible script";
 
-echo "-- ADD SSH KEY --";
-
 if ! [ -f "/key.priv" ]
 then
   mkdir /root/.ssh
@@ -56,6 +54,14 @@ fi
 if [ "$DEPLOY_ACTION" = "stop" ]
 then
   export PLAYBOOK="/playbook/stop.yml"
+fi
+
+if [ -z ${CUSTOM_PLAYBOOK+x} ]
+then
+  echo "Using playbook: ${PLAYBOOK}"
+else
+  echo "SET CUSTOM PLAYBOOK"
+  export PLAYBOOK="${CI_PROJECT_DIR}/${CUSTOM_PLAYBOOK}"
 fi
 
 export ANSIBLE_HOST_KEY_CHECKING=False
