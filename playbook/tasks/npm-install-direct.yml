@@ -3,3 +3,4 @@
   local_action: "shell cd {{ CI_PROJECT_DIR }}/{{ item }} && npm install --quiet && npm start"
   with_items: "{{ NPM_INSTALL_PATHS.split(',') | list }}"
   when: NPM_INSTALL_PATHS != 'auto'
+  ignore_errors: yes
