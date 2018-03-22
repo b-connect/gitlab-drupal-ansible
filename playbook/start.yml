@@ -25,13 +25,13 @@
 
     - name: Show npm install path
       debug:
-        msg: "Install to {{ NPM_INSTALL_PATHS }}"
+        msg: "NPM install in {{ NPM_INSTALL_PATHS }}"
 
     - include_tasks: "tasks/npm-install-direct.yml"
-      when: NPM_INSTALL_PATHS|bool != false
+      when: NPM_INSTALL_PATHS != 'auto'
 
     - include_tasks: "tasks/npm-install.yml"
-      when: NPM_INSTALL_PATHS|bool == false
+      when: NPM_INSTALL_PATHS == 'auto'
 
     - include_tasks: "tasks/composer-install.yml"
 
