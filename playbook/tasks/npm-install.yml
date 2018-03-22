@@ -6,9 +6,9 @@
     paths: "{{ CI_PROJECT_DIR }}"
     recurse: true
   register: npm_paths
-  when: NPM_INSTALL_PATHS != false
+  when: NPM_INSTALL_PATHS|bool == false
 
-- name: Start webpack
+- name: Start webpack in npm paths
   local_action: "shell cd {{ item.path | dirname }} && npm install --quiet && npm start"
   with_items: "{{ npm_paths.files | list }}"
   when: npm_paths is defined

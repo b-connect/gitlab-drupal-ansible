@@ -23,9 +23,16 @@
       debug:
         msg: "Install to {{ BUILD_DIR }}"
 
+    - name: Show npm install path
+      debug:
+        msg: "Install to {{ NPM_INSTALL_PATHS }}"
+
+    - include_tasks: "tasks/npm-install-direct.yml"
+      when: NPM_INSTALL_PATHS|bool != false
 
     - include_tasks: "tasks/npm-install.yml"
-    - include_tasks: "tasks/npm-install-direct.yml"
+      when: NPM_INSTALL_PATHS|bool == false
+
     - include_tasks: "tasks/composer-install.yml"
 
     - name: "Check if directory exists"
