@@ -42,6 +42,9 @@ do
     echo $entry >> /excludes.txt
 done
 
+echo "Rsync ignore:"
+cat /excludes
+
 echo "Checkout: ${CI_REPOSITORY_URL}"
 
 echo ${DEPLOY_HOST} > /inventory
