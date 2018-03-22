@@ -10,10 +10,9 @@
       register: docksal
 
     - name: Restart docksal container with fin up
-      shell: source ~/.zshrc && fin up
+      shell: fin up
       when: docksal.stat.exists
       args:
-        executable: /bin/zsh
         chdir: "{{ BUILD_DIR }}"
 
     - name: "Include site status check"
@@ -58,9 +57,8 @@
         force: true
 
     - name: Restart docksal container with fin up
-      shell: source ~/.zshrc && fin up
+      shell: fin up
       args:
-        executable: /bin/zsh
         chdir: "{{ BUILD_DIR }}"
 
     - name: "Include site installation"
@@ -78,8 +76,7 @@
       when: DRUPAL_FEATURE_REVERT is defined
 
     - name: Clear drupal cache
-      shell: source ~/.zshrc && fin drush cr
+      shell: fin drush cr
       args:
-        executable: /bin/zsh
         chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
       ignore_errors: yes
