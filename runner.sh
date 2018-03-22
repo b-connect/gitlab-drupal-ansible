@@ -33,6 +33,8 @@ fi
 if [ -z "$EXCLUDE_RSYNC" ]
 then
   export EXCLUDE_RSYNC="${DRUPAL_DOCROOT}/sites/default/settings.php,${DRUPAL_DOCROOT}/sites/default/files"
+else
+  export EXCLUDE_RSYNC="${EXCLUDE_RSYNC},${DRUPAL_DOCROOT}/sites/default/settings.php,${DRUPAL_DOCROOT}/sites/default/files"
 fi
 
 entries=$(echo $EXCLUDE_RSYNC | tr "," "\n")
