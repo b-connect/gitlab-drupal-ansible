@@ -30,7 +30,7 @@ then
   export DRUPAL_DOCROOT="docroot";
 fi
 
-if [ -z "$EXLUDE_RSYNC" ]
+if [ -z "$EXCLUDE_RSYNC" ]
 then
   export EXCLUDE_RSYNC="${DRUPAL_DOCROOT}/sites/default/settings.php,${DRUPAL_DOCROOT}/sites/default/files"
 fi
