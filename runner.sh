@@ -43,7 +43,7 @@ do
 done
 
 echo "Rsync ignore:"
-cat /excludes
+cat /excludes.txt
 
 echo "Checkout: ${CI_REPOSITORY_URL}"
 
