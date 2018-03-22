@@ -8,7 +8,6 @@
   shell: "fin drush sql-dump > {{ BACKUP_DIR }}/backup-{{ ansible_date_time.date }}-{{ ansible_date_time.time }}.sql"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
 
 - find: path="{{ BACKUP_DIR }}"
   register: backup_files

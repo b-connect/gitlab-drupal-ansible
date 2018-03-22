@@ -4,19 +4,16 @@
   register: output
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG == false
 
 - name: Install drupal site from config
   shell: "fin drush si {{ DRUPAL_PROFILE }} --account-name={{ DRUPAL_ACCOUNT_NAME }} --account-pass={{ DRUPAL_ACCOUNT_PASS }} --config-dir={{ DRUPAL_SITE_CONFIG }} {{ DRUPAL_SITE_INSTALL_FLAGS }} --db-url=mysql://root:root@db/drupal -y"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG != false
 
 - name: Add config directory to settings.php
   shell: fin exec "echo '\$config_directories[CONFIG_SYNC_DIRECTORY]=\"{{ DRUPAL_SITE_CONFIG }}\";' | sudo tee --append /var/www/docroot/sites/default/settings.php"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   when: DRUPAL_SITE_CONFIG != false

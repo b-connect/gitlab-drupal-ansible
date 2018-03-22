@@ -3,7 +3,6 @@
   shell: "fin db import --db=drupal < {{ DRUPAL_MIGRATE_DB }}"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   when: DRUPAL_MIGRATE_DB != false
 
 - name: "Migrate files"
@@ -16,9 +15,8 @@
   when: DRUPAL_MIGRATE_FILES != false
 
 - name: Clear drupal cache
-  shell: source ~/.zshrc && fin drush cr
+  shell: fin drush cr
   args:
-    executable: /bin/zsh
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
   ignore_errors: yes
   when: DRUPAL_MIGRATE_DB != false

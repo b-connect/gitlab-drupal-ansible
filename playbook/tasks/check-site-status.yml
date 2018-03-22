@@ -7,7 +7,6 @@
   shell: "fin drush status bootstrap"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   register: drupal_site_status
   ignore_errors: yes
   when: drupal_exists.stat.exists

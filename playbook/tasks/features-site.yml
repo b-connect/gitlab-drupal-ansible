@@ -3,7 +3,6 @@
   shell: fin drush pm-list --status=enabled | grep "(features)"
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   register: drupal_features_installed
   failed_when: "drupal_features_installed.stderr == ''"
   ignore_errors: yes
@@ -12,5 +11,4 @@
   shell: fin drush fia -y
   args:
     chdir: "{{ BUILD_DIR }}/{{ DRUPAL_DOCROOT }}"
-    executable: /bin/zsh
   when: drupal_features_installed.stdout != ""
